@@ -28,9 +28,9 @@ const AddCateory = ({text, setText, addCatRefElem, storedCategoryTodos}) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-        className='col-span-3 w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-0'
+        className='col-span-3 w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-0 text-xs md:text-sm'
       />
-      <button onClick={handleAdd} className='col-span-1 bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer text-xs md:text-lg'>Add Category</button>
+      <button onClick={handleAdd} className='col-span-1 bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer text-xs md:text-sm'>Add Category</button>
     </div>
   );
 };
