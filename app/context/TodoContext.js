@@ -79,7 +79,7 @@ export const TodoProvider = ({ children }) => {
       const stored = localStorage.getItem('userData');
       if (!stored || JSON.parse(stored).length === 0) {
         try {
-          const res = await fetch('/api/data');
+          const res = await fetch('/api');
           const data = await res.json();
           dispatch({ type: 'SET_INITIAL_STATE', payload: data });
         } catch (err) {
