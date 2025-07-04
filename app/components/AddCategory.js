@@ -30,7 +30,7 @@ const AddCateory = ({text, setText, addCatRefElem, storedCategoryTodos}) => {
         onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
         className='col-span-3 w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-0'
       />
-      <button onClick={handleAdd} className='col-span-1 bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer'>Add Category</button>
+      <button onClick={handleAdd} className='col-span-1 bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer text-xs md:text-lg'>Add Category</button>
     </div>
   );
 };
