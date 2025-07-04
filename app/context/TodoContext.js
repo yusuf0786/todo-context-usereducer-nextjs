@@ -1,64 +1,95 @@
-'use client'; // Needed for Context API in App Router
+'use client';
 
-import { createContext, useReducer } from 'react';
-import {data} from '../data';
-
-let initialState = await data();
-
-// const getUaerData = () => JSON.parse(localStorage.getItem('userData') || '[]');
-
-const todoReducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      const newState = state.map(category => {
-        if (category.id === action.categoryId) {
-          return {
-            ...category,
-            todos: [...category.todos, action.payload]
-          };
-        }
-        return category;
-      });
-      localStorage.setItem('userData', JSON.stringify(newState));
-      return newState;
-
-    case 'ADD_CATEGORY':
-      const newCategory = [...state, {
-        categoryName: action.payload.text,
-        id: action.payload.id,
-        todos: []
-      }];
-      localStorage.setItem('userData', JSON.stringify(newCategory));
-      return newCategory;
-
-    case 'DELETE_TODO':
-      const newDeletedState =  state.map(category => {
-        if (category.id === action.categoryId) {
-          return {
-            ...category,
-            todos: category.todos.filter(todo => todo.id !== action.payload)
-          };
-        }
-        return category;
-      });
-      localStorage.setItem('userData', JSON.stringify(newDeletedState));
-      return newDeletedState;
-
-    case 'DELETE_CATEGORY':
-      const newDeletedCatState = state.filter(category => category.id !== action.categoryId);
-      localStorage.setItem('userData', JSON.stringify(newDeletedCatState));
-      return newDeletedCatState;
-    default:
-      return state;
-  }
-};
+import { createContext, useReducer, useEffect } from 'react';
 
 export const TodoContext = createContext();
 
+const todoReducer = (state, action) => {
+  let updatedState;
+
+  switch (action.type) {
+    case 'ADD_TODO':
+      updatedState = state.map(category => {
+        if (category.id === action.categoryId) {
+          return {
+            ...category,
+            todos: [action.payload, ...category.todos],
+          };
+        }
+        return category;
+      });
+      break;
+
+    case 'ADD_CATEGORY':
+      updatedState = [{
+        categoryName: action.payload.text,
+        id: action.payload.id,
+        todos: action.payload.todos || [],
+      }, ...state];
+      break;
+
+    case 'DELETE_TODO':
+      updatedState = state.map(category => {
+        if (category.id === action.categoryId) {
+          return {
+            ...category,
+            todos: category.todos.filter(todo => todo.id !== action.payload),
+          };
+        }
+        return category;
+      });
+      break;
+
+    case 'DELETE_CATEGORY':
+      updatedState = state.filter(category => category.id !== action.categoryId);
+      break;
+
+    case 'SET_INITIAL_STATE':
+      updatedState = action.payload;
+      break;
+
+    default:
+      return state;
+  }
+
+  // Persist to localStorage
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('userData', JSON.stringify(updatedState));
+  }
+
+  return updatedState;
+};
+
 export const TodoProvider = ({ children }) => {
-  const xdata = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')) : initialState;
-  localStorage.setItem('userData', JSON.stringify(xdata));
-  const [state, dispatch] = useReducer(todoReducer, xdata);
+  const [state, dispatch] = useReducer(
+    todoReducer,
+    [],
+    () => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('userData');
+        return stored ? JSON.parse(stored) : [];
+      }
+      return [];
+    }
+  );
+
+  // Fetch from API if localStorage is empty
+  useEffect(() => {
+    const fetchData = async () => {
+      const stored = localStorage.getItem('userData');
+      if (!stored || JSON.parse(stored).length === 0) {
+        try {
+          const res = await fetch('/api/data');
+          const data = await res.json();
+          dispatch({ type: 'SET_INITIAL_STATE', payload: data });
+        } catch (err) {
+          console.error('Failed to fetch data:', err);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <TodoContext.Provider value={{ state, dispatch }}>

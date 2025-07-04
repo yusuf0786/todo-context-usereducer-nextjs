@@ -1,17 +1,19 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { TodoContext } from '../context/TodoContext';
 
-const AddTodo = ({categoryId}) => {
-  const [text, setText] = useState('');
+const AddTodo = ({categoryId, addInputRefElem, text, setText}) => {
   const { dispatch } = useContext(TodoContext);
 
   const handleAdd = () => {
     if (!text.trim()) return;
     dispatch({
       type: 'ADD_TODO',
-      payload: { id: Date.now(), text },
+      payload: {
+        id: `todo-${text.trim().replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => index === 0 ? word.toLowerCase() : word.toUpperCase()).replace(/\s+/g, '')}${Date.now()}`, 
+        text: text.trim().replace(/\s+/g, ' '),
+      },
       categoryId: categoryId,
     });
     setText('');
@@ -20,6 +22,7 @@ const AddTodo = ({categoryId}) => {
   return (
     <div className='grid grid-cols-4 gap-x-2 bg-white rounded-md p-2 flex items-center justify-between'>
       <input
+        ref={addInputRefElem}
         type="text"
         placeholder="Enter todo"
         value={text}
