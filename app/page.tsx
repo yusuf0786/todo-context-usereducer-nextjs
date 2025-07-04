@@ -42,14 +42,14 @@ function HomeContent() {
     dispatch({ type: 'DELETE_CATEGORY', payload: category.id, categoryId: category.id });
   };
 
-  if (!appState.length) return null; // or loading state
+  // if (!appState.length) return null; // or loading state
 
   return (
     <main style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
       <AddCategory text={text} setText={setText} addCatRefElem={addCatRefElem} storedCategoryTodos={storedCategoryTodos} />
       <h1 className='text-2xl font-bold my-3 text-center'>Your Todo Categories:</h1>
       <div className='grid grid-cols-1 md:grid-cols-2 items-center gap-x-2 gap-y-2 '>
-        {appState.map((category: category) => (
+        {appState.length > 0 && appState.map((category: category) => (
           <div key={category.id} className="flex items-center justify-between p-[0.75rem] border border-gray-300 rounded-sm">
             <Link href={`/todolist/${category.id}`} className='text-[#00000090] hover:underline'>
               {category.categoryName}
