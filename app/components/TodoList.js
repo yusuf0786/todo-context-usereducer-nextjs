@@ -30,8 +30,8 @@ const TodoList = ({ categoryId, addInputRefElem, setText }) => {
         {selectedState.categoryName}
       </h1>
       <ul>
-        {selectedState.todos.map(todo => (
-          <li key={todo.id} className="flex items-center justify-between mb-2 ps-3">
+        {selectedState.todos.map((todo, index) => (
+          <li key={todo.id} className={`flex items-center justify-between mb-4 ps-0 ${index === selectedState.todos.length - 1 ? 'border-b-0' : 'border-b-2'} border-dotted pb-4`}>
             <span className="font-(family-name:--font-handstyle) me-2">
               {todo.text}
             </span>
