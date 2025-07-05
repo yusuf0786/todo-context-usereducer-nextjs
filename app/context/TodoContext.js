@@ -52,6 +52,11 @@ const todoReducer = (state, action) => {
       updatedState = action.payload;
       break;
 
+    case 'SET_ALL':
+      updatedState = action.payload;
+      break;
+
+
     default:
       return state;
   }
