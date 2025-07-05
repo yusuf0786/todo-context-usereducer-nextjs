@@ -63,10 +63,6 @@ input {
   /* margin-right: 10px; */
 }
 
-button {
-  padding: 8px 12px;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

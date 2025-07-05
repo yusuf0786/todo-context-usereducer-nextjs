@@ -28,6 +28,10 @@ const todoReducer = (state, action) => {
       }, ...state];
       break;
 
+    case 'REORDER_CATEGORY':
+      updatedState = [...action.payload];
+      break;
+
     case 'DELETE_TODO':
       updatedState = state.map(category => {
         if (category.id === action.categoryId) {
