@@ -7,7 +7,8 @@ import {
   closestCenter,
   PointerSensor,
   useSensor,
-  useSensors
+  useSensors,
+  TouchSensor
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -23,6 +24,7 @@ const SortableTodoItem = ({ todo, index, selectedState, handleEdit, handleDelete
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    touchAction: 'none'
   };
 
   return (
@@ -31,7 +33,7 @@ const SortableTodoItem = ({ todo, index, selectedState, handleEdit, handleDelete
       style={style}
       {...attributes}
       {...listeners}
-      className={`flex items-center justify-between mb-4 ps-0 ${
+      className={`touch-none flex items-center justify-between mb-4 ps-0 ${
         index === selectedState.todos.length - 1 ? 'border-b-0' : 'border-b-2'
       } border-dotted pb-4`}
     >
@@ -49,8 +51,15 @@ const TodoList = ({ categoryId, addInputRefElem, setText }) => {
   const [selectedState, setSelectedState] = useState(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
+    })
   );
+
 
   useEffect(() => {
     const stored = localStorage.getItem('userData');

@@ -32,6 +32,18 @@ const todoReducer = (state, action) => {
       updatedState = [...action.payload];
       break;
 
+    case 'REORDER_TODO':
+      updatedState = state.map(category => {
+        if (category.id === action.categoryId) {
+          return {
+            ...category,
+            todos: action.payload,
+          };
+        }
+        return category;
+      });
+      break;
+
     case 'DELETE_TODO':
       updatedState = state.map(category => {
         if (category.id === action.categoryId) {
@@ -55,7 +67,6 @@ const todoReducer = (state, action) => {
     case 'SET_ALL':
       updatedState = action.payload;
       break;
-
 
     default:
       return state;
