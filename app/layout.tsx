@@ -16,7 +16,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Todo App",
-  description: "A Best and Last Todo App you wanna use, its build on Next.js",
+  description: "A Best and Last Todo App you wanna use, I wanted have a todo app like this & I personally use it daily",
+  keywords: "todo, app, todo app, todo list, todo list app, todo list app, todo list app, best todos app, best todo list app, best todo lest",
+  openGraph: {
+    title: "Todo App",
+    description: "A Best and Last Todo App you wanna use, I wanted have a todo app like this & I personally use it daily",
+    images: [
+      {
+        url: "/favicon.png",
+        width: 1200,
+        height: 630,
+        alt: "Todo App",
+      },
+    ],
+  },
+  verification: {
+    google: 'BhJrHvP820i8RZ3nEKPnvulfJ26NSopHTu8_Jw0u-Vs',
+  },
 };
 
 export default function RootLayout({
