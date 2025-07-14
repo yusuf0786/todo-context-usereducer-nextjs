@@ -24,8 +24,12 @@ const SortableTodoItem = ({ todo, index, selectedState, handleEdit, handleDelete
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    touchAction: 'none'
+    touchAction: 'auto',
   };
+
+  const dragHandleStyle = {
+    touchAction: 'none'
+  }
 
   return (
     <li
@@ -37,7 +41,7 @@ const SortableTodoItem = ({ todo, index, selectedState, handleEdit, handleDelete
     >
       <span className='flex align-top'>
         {/* DRAG HANDLE ICON */}
-        <span {...listeners} {...attributes} className="cursor-grab me-2 select-none" title="Drag to reorder">⠿</span>
+        <span style={dragHandleStyle} {...listeners} {...attributes} className="cursor-grab me-2 select-none" title="Drag to reorder">⠿</span>
 
         {/* TODO TEXT */}
         <span className="font-(family-name:--font-handstyle) me-2 flex-1">{todo.text}</span>
